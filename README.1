@@ -1,0 +1,124 @@
+.TH RUNAPP 1
+.SH NAME
+runapp \- minimal application launcher with live filtering
+.SH SYNOPSIS
+.B runapp
+[\fB\-m\fR \fImode\fR]
+[\fB\-p\fR \fIpath,...\fR]
+[\fB\-t\fR \fInum\fR]
+[\fB\-h\fR]
+.SH DESCRIPTION
+runapp scans directories for executables and displays them
+in an interactive ncurses interface with live filtering
+and vim-style navigation.
+Selected application is launched via
+.BR fork (2)
+and
+.BR execl (3).
+.SH OPTIONS
+.TP
+.BI \-m " mode"
+Display mode.
+.B ll
+for long (path + size + list),
+.B s
+for short (path only),
+.B l
+for single line.
+Default is
+.BR ll .
+.TP
+.BI \-p " path,..."
+Comma-separated list of directories to scan.
+Default is /bin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin.
+.TP
+.BI \-t " num"
+Maximum number of entries shown in list.
+Default is 20.
+.TP
+.B \-h
+Print usage and exit.
+.SH KEYS
+.TP
+.B Any character
+Filter list in real time.
+.TP
+.B j / Down
+Move cursor down.
+.TP
+.B k / Up
+Move cursor up.
+.TP
+.B Enter
+Launch selected entry.
+.TP
+.B Backspace
+Delete last character.
+.TP
+.B Escape
+Quit.
+.SH BUILD
+Dependencies: cc(1), ncurses.
+.PP
+Debian / Ubuntu / Kali:
+.PP
+.RS
+sudo apt install build-essential libncurses-dev
+.RE
+.PP
+Arch:
+.PP
+.RS
+sudo pacman -S base-devel ncurses
+.RE
+.PP
+Fedora:
+.PP
+.RS
+sudo dnf install gcc ncurses-devel
+.RE
+.PP
+Clone and build:
+.PP
+.RS
+git clone https://github.com/hippokrat/runapp
+.br
+cd runapp
+.br
+cc main.c draw_ui.c launch.c search.c -lncurses -o runapp
+.RE
+.SH I3 INTEGRATION
+In ~/.config/i3/config:
+.PP
+.RS
+set $menu xterm -e sh -c "exec ~/path/to/runapp -m ll"
+.br
+bindsym $mod+d exec --no-startup-id $menu
+.RE
+.SH EXAMPLES
+.TP
+runapp -m ll
+Scan default paths, long mode.
+.TP
+runapp -m s -p /bin,/usr/bin -t 10
+Short mode, custom paths, 10 entries max.
+.SH FILES
+.TP
+.I main.c
+Entry point, flag parsing.
+.TP
+.I search.c
+Directory scan and filtering.
+.TP
+.I draw_ui.c
+ncurses interface.
+.TP
+.I launch.c
+fork and exec.
+.SH AUTHOR
+Written by aka Hyppokrat.
+.SH SEE ALSO
+.BR dmenu (1),
+.BR fork (2),
+.BR execl (3),
+.BR ncurses (3)
