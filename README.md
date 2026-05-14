@@ -8,3 +8,6 @@ For configuration and to get familiar with the documentation, read the man page 
 
 `cd runapp`
 `man ./README.1`
+
+<img width="1366" height="768" alt="2026-05-14_10-33-12" src="https://github.com/user-attachments/assets/0580048f-0bfb-48f7-829c-a8449539caea" />
+
